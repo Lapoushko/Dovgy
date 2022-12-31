@@ -5,38 +5,39 @@ from urllib3 import Retry
 
 
 class GetCurrencyValues:
-    def __init__(self, currency):
-        self.currency = currency
+    def __init__(self, cur):
+        self.cur = cur
 
-    def get_currencies(self, date):
-        session = requests.Session()
+    def getDate(self, first, second):
+        res = []
+        for y in range(int(first[:4]), int(second[:4]) + 1):
+            number = 1
+            if str(y) == first[:4]:
+                number = int(first[-2:])
+            for month in range(number, 13):
+                if len(str(month)) == 2:
+                    res.append(f"{month}/{y}")
+                else:
+                    res.append(f"0{month}/{y}")
+                if str(y) == second[:4] and (str(month) == second[-2:] or f"0{month}" == second[-2:]):
+                    break
+        return res
+    def getCurr(self, date):
+        sess = requests.Session()
         retry = Retry(connect=3, backoff_factor=0.5)
         adapter = HTTPAdapter(max_retries=retry)
-        session.mount('http://', adapter)
-        session.mount('https://', adapter)
-        url = f"https://www.cbr.ru/scripts/XML_daily.asp?date_req=01/{date}d=1"
-        res = session.get(url)
-        cur_df = pd.read_xml(res.text)
-        values = []
-        for currency in self.currency:
-            if currency in cur_df["CharCode"].values:
-                values.append(round(float(cur_df.loc[cur_df["CharCode"] == currency]["Value"].values[0].replace(',', "."))
-                                     / float(cur_df.loc[cur_df["CharCode"] == currency]["Nominal"]), 4))
+        sess.mount('http://', adapter)
+        sess.mount('https://', adapter)
+        urlAdress = f"https://www.cbr.ru/scripts/XML_daily.asp?date_req=01/{date}d=1"
+        res = sess.get(urlAdress)
+        curDataFrame = pd.read_xml(res.text)
+        vals = []
+        for cur in self.cur:
+            if cur in curDataFrame["CharCode"].values:
+                vals.append(round(float(curDataFrame.loc[curDataFrame["CharCode"] == cur]["Value"].values[0].replace(',', "."))
+                                     / float(curDataFrame.loc[curDataFrame["CharCode"] == cur]["Nominal"]), 4))
             else:
-                values.append(0)
-        return [date] + values
+                vals.append(0)
+        return [date] + vals
 
-    def get_date(self, first, second):
-        result = []
-        for year in range(int(first[:4]), int(second[:4]) + 1):
-            num = 1
-            if str(year) == first[:4]:
-                num = int(first[-2:])
-            for month in range(num, 13):
-                if len(str(month)) == 2:
-                    result.append(f"{month}/{year}")
-                else:
-                    result.append(f"0{month}/{year}")
-                if str(year) == second[:4] and (str(month) == second[-2:] or f"0{month}" == second[-2:]):
-                    break
-        return result
+

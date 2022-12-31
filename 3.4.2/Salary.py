@@ -17,4 +17,4 @@ class Salary:
         return float(value)
 
     def get_average_salary(self):
-        return round(((self.salary_from + self.salary_to) * CurrencyFormatter(self.month_year,self.salary_currency).get_currency()) / 2, 4)
+        return round(((self.salary_from + self.salary_to) * CurrencyFormatter(self.month_year,self.salary_currency).getCurr()) / 2, 4)

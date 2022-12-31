@@ -6,7 +6,6 @@ from ParseCsvFileByYear import ParseCsvFileByYear
 from Stat import Stat
 from CreateStatFiles import CreateStatFiles
 
-
 directory = 'vacancies_by_year'
 if __name__ == "__main__":
     year_salary, year_vacancy, professions_year_salary, professions_year_vacancies = {}, {}, {}, {}

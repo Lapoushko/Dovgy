@@ -8,15 +8,18 @@ from CreateStatFiles import CreateStatFiles
 
 directory = 'vacancies_by_year'
 if __name__ == "__main__":
-    year_salary, year_vacancy, professions_year_salary, professions_year_vacancies = {}, {}, {}, {}
-    inp = Input()
-    spl = ParseCsvFileByYear(inp.csv_file, directory)
+    year_salary = {}
+    professions_year_salary = {}
+    year_vacancy = {}
+    professions_year_vacancies = {}
+    inputUser = Input()
+    spl = ParseCsvFileByYear(inputUser.fileCsv, directory)
     start = time.time()
     files = [str(file) for file in pathlib.Path(f"./{directory}").iterdir()]
-    statistics = Stat(inp.profession)
+    stats = Stat(inputUser.profession)
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        r = list(executor.map(statistics.process_data, files))
-        for el in r:
+        raw = list(executor.map(stats.process_data, files))
+        for e in raw:
             for i, value in zip(range(4), [year_salary, year_vacancy, professions_year_salary, professions_year_vacancies]):
-                value.update(el[i])
-    CreateStatFiles(year_salary, year_vacancy, professions_year_salary, professions_year_vacancies, inp.profession).create_files()
+                value.update(e[i])
+    CreateStatFiles(year_salary, year_vacancy, professions_year_salary, professions_year_vacancies, inputUser.profession).create_files()

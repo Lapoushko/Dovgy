@@ -12,7 +12,7 @@ class Stat:
         self.profession = profession
 
     def process_data(self, file_name):
-        data = DataSet(file_name).vacancies_objects
+        data = DataSet(file_name).vacsObj
         data_profession = [d for d in data if self.profession in d.name]
         year_salary = self.convert_to_param_salary(data)
         professions_year_salary = self.add_missing_years(self.convert_to_param_salary(data_profession), year_salary)
@@ -26,7 +26,7 @@ class Stat:
             if not param_salary.__contains__(vacancy.year):
                 param_salary[vacancy.year] = YearSalary(vacancy.year, vacancy.salary)
             else:
-                param_salary[vacancy.year] = param_salary[vacancy.year].add_salary(vacancy.salary)
+                param_salary[vacancy.year] = param_salary[vacancy.year].addNewSalary(vacancy.salary)
         return [param_salary[d] for d in param_salary]
 
     def convert_from_param_salary_to_dict(self, param_salary):

@@ -10,15 +10,15 @@ class Report:
     Класс для создания Excel таблицы
     """
 
-    def __init__(self, profession, years, average_salary, average_salary_profession, count_vacancies_by_year,
-                 count_vacancies_by_year_prof, file_name):
-        self.years = years
-        self.average_salary = average_salary
-        self.average_salary_profession = average_salary_profession
-        self.count_vacancies_by_year = count_vacancies_by_year
-        self.count_vacancies_by_year_prof = count_vacancies_by_year_prof
-        self.profession = profession
-        self.file_name = file_name
+    def __init__(self, profes, countYear, salaryAvg, avgSalaryProf, countVacsYear,
+                 countVacsYearProf, nameFile):
+        self.years = countYear
+        self.average_salary = salaryAvg
+        self.average_salary_profession = avgSalaryProf
+        self.count_vacancies_by_year = countVacsYear
+        self.count_vacancies_by_year_prof = countVacsYearProf
+        self.profession = profes
+        self.file_name = nameFile
 
     def generate_excel(self):
         if not isinstance(self.file_name, str):
