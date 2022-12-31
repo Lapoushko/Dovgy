@@ -20,7 +20,7 @@ class CreateStatFiles:
         report.generateExcel()
         nameGraph = "graph.png"
         pdfFile = PdfCreater(nameGraph=nameGraph, excelNameFile=excel, profes=self.profession)
-        pdfFile.generate_pdf()
+        pdfFile.generatePdf()
     def __init__(self, salaryYear, vacancyYear, profSalaryYear, profVacanciesYear, profes):
         self.salaryYear = salaryYear
         self.vacancyYear = vacancyYear

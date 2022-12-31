@@ -7,7 +7,7 @@ from xlsx2html import xlsx2html
 class PdfCreater:
     # Класс для конвертирования данных статистики в pdf-файл
 
-    def generate_pdf(self):
+    def generatePdf(self):
         environment = Environment(loader=FileSystemLoader('.'))
         temp = environment.get_template("pdf_template.html")
         pathGraph = os.path.abspath(self.graph)
