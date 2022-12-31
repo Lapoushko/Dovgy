@@ -17,7 +17,7 @@ class CreateStatFiles:
                         countVacsYear=[self.vacancyYear[i] for i in self.vacancyYear],
                         countVacsYearProf=[self.profVacanciesYear[i] for i in self.profVacanciesYear],
                         nameFile=excel)
-        report.generate_excel()
+        report.generateExcel()
         nameGraph = "graph.png"
         pdfFile = PdfCreater(nameGraph=nameGraph, excelNameFile=excel, profes=self.profession)
         pdfFile.generate_pdf()

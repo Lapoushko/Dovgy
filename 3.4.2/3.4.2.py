@@ -18,7 +18,7 @@ if __name__ == "__main__":
     files = [str(file) for file in pathlib.Path(f"./{directory}").iterdir()]
     stats = Stat(inputUser.profession)
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        raw = list(executor.map(stats.process_data, files))
+        raw = list(executor.map(stats.procData, files))
         for e in raw:
             for i, value in zip(range(4), [year_salary, year_vacancy, professions_year_salary, professions_year_vacancies]):
                 value.update(e[i])
