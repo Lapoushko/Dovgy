@@ -4,24 +4,24 @@ from Vacancy import Vacancy
 
 
 class DataSet:
-    """
-    Класс для представления набора вакансий
-    """
+    # Класс для представления набора вакансий
 
-    def __init__(self, file_name):
-        self.file_name = file_name
-        self.vacancies_objects = self.csv_reader()
+    def __init__(self, nameFile):
+        self.nameFile = nameFile
+        self.vacsObj = self.reader()
 
-    def csv_reader(self):
-        with open(self.file_name, encoding='utf-8-sig') as file:
-            file_reader = csv.reader(file)
-            lines = [row for row in file_reader]
-            headlines, vacancies = lines[0], lines[1:]
-        return self.vacancies_formatter(headlines, vacancies)
+    def formatter(self, hds, vacs):
+        res = []
+        for vac in vacs:
+            vac = [" ".join(re.sub("<.*?>", "", value).replace('\n', '; ').split()) for value in vac]
+            res.append(Vacancy({x: y for x, y in zip([r for r in hds], [v for v in vac])}))
+        return res
 
-    def vacancies_formatter(self, headlines, vacancies):
-        result = []
-        for vacancy in vacancies:
-            vacancy = [" ".join(re.sub("<.*?>", "", value).replace('\n', '; ').split()) for value in vacancy]
-            result.append(Vacancy({x: y for x, y in zip([r for r in headlines], [v for v in vacancy])}))
-        return result
+    def reader(self):
+        with open(self.nameFile, encoding='utf-8-sig') as f:
+            reader = csv.reader(f)
+            lines = [row for row in reader]
+            hds, vacs = lines[0], lines[1:]
+        return self.formatter(hds, vacs)
+
+

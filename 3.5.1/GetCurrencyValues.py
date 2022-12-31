@@ -5,37 +5,38 @@ from urllib3 import Retry
 
 
 class GetCurrencyValues:
-    def __init__(self, currency):
-        self.currency = currency
+    def __init__(self, cur):
+        self.currency = cur
 
-    def get_currencies(self, date):
-        session = requests.Session()
-        retry = Retry(connect=3, backoff_factor=0.5)
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount('http://', adapter)
-        session.mount('https://', adapter)
-        url = f"https://www.cbr.ru/scripts/XML_daily.asp?date_req=01/{date}d=1"
-        res = session.get(url)
-        cur_df = pd.read_xml(res.text)
-        values = []
-        for currency in self.currency:
-            if currency in cur_df["CharCode"].values:
-                values.append(round(float(cur_df.loc[cur_df["CharCode"] == currency]["Value"].values[0].replace(',', ".")) / float(cur_df.loc[cur_df["CharCode"] == currency]["Nominal"]), 4))
-            else:
-                values.append(0)
-        return [date] + values
-
-    def get_date(self, first_date, second_date):
-        result = []
+    def getDate(self, first_date, second_date):
+        res = []
         for year in range(int(first_date[:4]), int(second_date[:4]) + 1):
-            num = 1
+            number = 1
             if str(year) == first_date[:4]:
-                num = int(first_date[-2:])
-            for month in range(num, 13):
+                number = int(first_date[-2:])
+            for month in range(number, 13):
                 if len(str(month)) == 2:
-                    result.append(f"{month}/{year}")
+                    res.append(f"{month}/{year}")
                 else:
-                    result.append(f"0{month}/{year}")
+                    res.append(f"0{month}/{year}")
                 if str(year) == second_date[:4] and (str(month) == second_date[-2:] or f"0{month}" == second_date[-2:]):
                     break
-        return result
+        return res
+
+    def getCurs(self, date):
+        sess = requests.Session()
+        retry = Retry(connect=3, backoff_factor=0.5)
+        adapter = HTTPAdapter(max_retries=retry)
+        sess.mount('http://', adapter)
+        sess.mount('https://', adapter)
+        url = f"https://www.cbr.ru/scripts/XML_daily.asp?date_req=01/{date}d=1"
+        res = sess.get(url)
+        curDataFrame = pd.read_xml(res.text)
+        vals = []
+        for cur in self.currency:
+            if cur in curDataFrame["CharCode"].values:
+                vals.append(round(float(curDataFrame.loc[curDataFrame["CharCode"] == cur]["Value"].values[0].replace(',', ".")) / float(curDataFrame.loc[curDataFrame["CharCode"] == cur]["Nominal"]), 4))
+            else:
+                vals.append(0)
+        return [date] + vals
+
