@@ -3,20 +3,15 @@ import json
 
 data: List[Vacancy] = csv_filer(*csv_reader('vacancies_dif_currencies.csv'))
 
-currencies = {}
+currens = {}
 
-for vacancy in data:
-    year = vacancy.published_at.year
-    currency = vacancy.salary.salary_currency
+for vac in data:
+    year = vac.published_at.year
+    cur = vac.salary.salary_currency
     
-    if not currency:
-        continue
+    if not cur: continue
+    if year not in currens.keys():   currens[year] = {}
 
-    if year not in currencies.keys():
-        currencies[year] = {}
-    if currency not in currencies[year].keys():
-        currencies[year][currency] = 0
-    
-    currencies[year][currency] += 1
+    currens[year][cur] += 1
 
-print(json.dumps(currencies, indent=4, ensure_ascii=False))
+print(json.dumps(currens, indent=4, ensure_ascii=False))
