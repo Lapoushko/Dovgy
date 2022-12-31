@@ -21,16 +21,16 @@ class CreateStatFiles:
                        "Динамика количества вакансий по годам для выбранной профессии:": self.professions_year_vacancies}
         [print(i, output_data[i]) for i in output_data]
         excel_file = "report.xlsx"
-        report = Report(profession=self.profession,
+        report = Report(profes=self.profession,
                         years=[i for i in self.year_salary],
-                        average_salary=[self.year_salary[i] for i in self.year_salary],
-                        average_salary_profession=[self.professions_year_salary[i] for i in
-                                                   self.professions_year_salary],
-                        count_vacancies_by_year=[self.year_vacancy[i] for i in self.year_vacancy],
-                        count_vacancies_by_year_prof=[self.professions_year_vacancies[i] for i in
-                                                      self.professions_year_vacancies],
-                        file_name=excel_file)
-        report.generate_excel()
+                        avgSalary=[self.year_salary[i] for i in self.year_salary],
+                        avgSalaryProf=[self.professions_year_salary[i] for i in
+                                       self.professions_year_salary],
+                        countVacsYear=[self.year_vacancy[i] for i in self.year_vacancy],
+                        countVacsYearProf=[self.professions_year_vacancies[i] for i in
+                                           self.professions_year_vacancies],
+                        nameFile=excel_file)
+        report.generateExcel()
         graph_name = "graph.png"
         pdf = PdfCreater(graph_name=graph_name, excel_file_name=excel_file, profession=self.profession)
-        pdf.generate_pdf()
+        pdf.generatePdf()

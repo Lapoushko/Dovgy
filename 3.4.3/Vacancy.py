@@ -2,9 +2,8 @@ from Salary import Salary
 
 
 class Vacancy:
-    """
-    Класс для представления вакансий
-    """
+    # Класс для представления вакансий
+
 
     def __init__(self, vacancy):
         self.name = vacancy["name"]
@@ -16,5 +15,5 @@ class Vacancy:
         self.published_at = vacancy["published_at"]
         self.year = self.published_at[:4]
 
-    def get_array_vacancy(self):
+    def getListVac(self):
         return [self.name, self.salary.get_average_salary(), self.area_name, self.published_at]

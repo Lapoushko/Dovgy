@@ -2,15 +2,15 @@ import pandas as pd
 
 
 class CurrencyFormatter:
-    def __init__(self, date, salary_currency):
+    def __init__(self, date, salaryCur):
         self.date = date
-        self.salary_currency = salary_currency
+        self.salary_currency = salaryCur
 
-    def get_currency(self):
+    def getCurrency(self):
         if self.salary_currency == "RUR":
             return 1
-        currencies = pd.read_csv("valutes.csv")
-        currency = currencies.loc[currencies["date"] == self.date]
-        if currency.__contains__(self.salary_currency):
-            return float(currency[self.salary_currency])
+        curs = pd.read_csv("valutes.csv")
+        cur = curs.loc[curs["date"] == self.date]
+        if cur.__contains__(self.salary_currency):
+            return float(cur[self.salary_currency])
         return 0
